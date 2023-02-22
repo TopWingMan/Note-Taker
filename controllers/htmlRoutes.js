@@ -22,14 +22,6 @@ router.post("/api/notes", async (req, res) => {
     // Destructuring assignment for the items in req.body
     const { title, text} = req.body;
 
-    // If all the required properties are present
-    if (title && text) {
-    // Variable for the object we will save
-    const newNote = {
-      title,
-      text,
-    };
-
     // Obtain existing notes
     fs.readFile('./db/db.json', 'utf8', (err, data) => {
         if (err) {
@@ -37,6 +29,19 @@ router.post("/api/notes", async (req, res) => {
         } else {
           // Convert string into JSON object
           const parsedNotes = JSON.parse(data);
+
+          let id = parsedNotes.length + 1;
+          console.log(parsedNotes.length + 1);
+
+          // If all the required properties are present
+          if (title && text) {
+          // Variable for the object we will save
+            var newNote = {
+              title,
+              text,
+              id,
+            };
+          }
   
           // Add a new note
           parsedNotes.push(newNote);
@@ -51,8 +56,8 @@ router.post("/api/notes", async (req, res) => {
                 : console.info('Successfully updated reviews!')
           );
         }
-    })}
-})
+    })
+  })
 
 
 module.exports = router;
